@@ -17,6 +17,8 @@ protected:
 public:
     Minion(const std::string &name, int cost, std::string description, int atk, int def);
 
+    virtual std::unique_ptr<Minion> clone() const = 0;
+    Minion(const Minion &other);
     CardType getType() const override;
 
     int getAttack() const;
@@ -38,41 +40,65 @@ public:
 class AirElemental : public Minion {
 public:
     AirElemental();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<AirElemental>(*this); 
+    }
 };
 
 class EarthElemental : public Minion {
 public:
     EarthElemental();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<EarthElemental>(*this); 
+    }
 };
 
 class BoneGolem : public Minion {
 public:
     BoneGolem();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<BoneGolem>(*this); 
+    }
 };
 
 class FireElemental : public Minion {
 public:
     FireElemental();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<FireElemental>(*this); 
+    }
 };
 
 class PotionSeller : public Minion {
 public:
     PotionSeller();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<PotionSeller>(*this); 
+    }
 };
 
 class NovicePyromancer : public Minion {
 public:
     NovicePyromancer();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<NovicePyromancer>(*this); 
+    }
 };
 
 class ApprenticeSummoner : public Minion {
 public:
     ApprenticeSummoner();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<ApprenticeSummoner>(*this); 
+    }
 };
 
 class MasterSummoner : public Minion {
 public:
     MasterSummoner();
+    std::unique_ptr<Minion> clone() const override {
+        return std::make_unique<MasterSummoner>(*this); 
+    }
 };
 
 #endif
