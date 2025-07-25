@@ -2,6 +2,7 @@
 #include "minion.h"
 #include "ritual.h"
 #include "spell.h"
+#include "enchantment.h"
 #include <iostream>
 #include <algorithm>
 #include <random>
@@ -64,8 +65,50 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
         }
 
         case CardType::Enchantment: {
-            std::cout << "enchantment is not allowed to be played on board" << std::endl;
-            return;
+            if (targetPlayer != id) {
+                std::cerr << "Can only enchant your own minions." << std::endl;
+                return;
+            }
+            if (targetCard < 1 || targetCard > static_cast<int>(board.size())) {
+                std::cerr << "Invalid target minion index for enchantment." << std::endl;
+                return;
+            }
+
+            // Remove the minion to be enchanted
+            std::unique_ptr<Card> targetCardPtr = std::move(board[targetCard - 1]);
+            Minion *targetMinion = dynamic_cast<Minion*>(targetCardPtr.get());
+            if (!targetMinion) {
+                std::cerr << "Target is not a minion." << std::endl;
+                return;
+            }
+
+            // Transfer ownership of the target to a new enchantment
+            std::unique_ptr<Minion> targetMinionPtr{dynamic_cast<Minion*>(targetCardPtr.release())};
+
+            std::string enchantmentName = currentCard->getName();
+            std::unique_ptr<Minion> wrapped;
+
+            if (enchantmentName == "Giant Strength") {
+                wrapped = std::make_unique<GiantStrength>(std::move(targetMinionPtr));
+            } else if (enchantmentName == "Enrage") {
+                wrapped = std::make_unique<Enrage>(std::move(targetMinionPtr));
+            } else if (enchantmentName == "Haste") {
+                wrapped = std::make_unique<Haste>(std::move(targetMinionPtr));
+            } else if (enchantmentName == "Magic Fatigue") {
+                wrapped = std::make_unique<MagicFatigue>(std::move(targetMinionPtr));
+            } else if (enchantmentName == "Silence") {
+                wrapped = std::make_unique<Silence>(std::move(targetMinionPtr));
+            } else {
+                std::cerr << "Unknown enchantment." << std::endl;
+                return;
+            }
+
+            // Replace minion on board
+            board[targetCard - 1] = std::move(wrapped);
+
+            std::cout << name << " enchanted minion with " << enchantmentName << std::endl;
+
+            break;
         }
     }
     hand.erase(hand.begin() + (index - 1));

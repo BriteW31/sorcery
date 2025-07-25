@@ -9,6 +9,13 @@ Minion::Minion(const std::string &name, int cost, std::string description, int a
 
 CardType Minion::getType() const { return CardType::Minion; }
 
+Minion::Minion(const Minion &other)
+    : Card{other}, atk{other.atk}, def{other.def}, actions{other.actions} {
+    if (other.ability) {
+        ability = std::unique_ptr<Ability>(other.ability->clone());
+    }
+}
+
 int Minion::getAttack() const { return atk; }
 int Minion::getDefense() const { return def; }
 void Minion::setAttack(int val) { atk = val; }
@@ -72,14 +79,3 @@ card_template_t Minion::display() const {
     */
     return display_minion_no_ability(name, cost, atk, def);
 }
-
-
-/*
-BoneGolem::BoneGolem(): Minion{"Bone Golem", 2, "Gain +1/+1 whenever a minion leaves play.", 1, 3} {}
-FireElemental::FireElemental(): Minion{"Fire Elemental", 2, "Whenever an opponent's minion enters play, deal 1 damage to it.", 2, 2} {}
-PotionSeller::PotionSeller(): Minion{"Potion Seller", 2, "At the end of your turn, all your minions gain +0/+1.", 1, 3} {}
-NovicePyromancer::NovicePyromancer(): Minion{"Novice Pyromancer", 1, "Deal 1 damage to target minion", 0, 1} {}
-ApprenticeSummoner::ApprenticeSummoner(): Minion{"Apprentice Summoner", 1, "Summon a 1/1 air elemental", 1, 1} {}
-MasterSummoner::MasterSummoner(): Minion{"Master Summoner", 3, "Summon up to three 1/1 air elementals", 2, 3} {}
-*/
-
