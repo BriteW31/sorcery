@@ -21,17 +21,12 @@ void Game::helpMsg() const {
     }
 }
 
-Game::Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2)
-    : testingMode{testing}, graphicsEnabled{graphics}, deckFile1{deckFile1}, deckFile2{deckFile2} { }
+Game::Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2, std::string initFile)
+    : testingMode{testing}, graphicsEnabled{graphics}, deckFile1{deckFile1}, deckFile2{deckFile2}, initFile{std::ifstream{initFile}} { }
 
-void Game::init(const std::string &initFile) {
-    this->initFile = initFile;
+void Game::init() {
     std::istream *in = &std::cin;
-    std::ifstream file;
-    if (!initFile.empty()) {
-        file.open(initFile);
-        if (file) in = &file;
-    }
+    if (initFile) in = &initFile;
 
     std::string name1, name2;
     std::cout << "Enter Player 1's name: ";
@@ -53,7 +48,15 @@ void Game::start() {
         Player &p = getCurrentPlayer();
         p.startTurn();
         std::string cmd;
-        while (std::getline(std::cin, cmd)) {
+        std::istream *input = initFile ? &initFile : &std::cin;
+        while (true) {
+            if (input->eof() && input == &initFile) {
+                input = &std::cin;
+                continue;
+            }
+            if (!std::getline(*input, cmd)) {
+                break;
+            }
             if (cmd == "end") break;
             processCommand(cmd);
         }
