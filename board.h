@@ -8,6 +8,9 @@
 #include <string>
 
 #define BLOCK_HEIGHT 11
+
+enum class WinState { Tie, Player1, Player2, NotEnd };
+
 struct Listener {
         std::string key;
         Ability * cb;
@@ -28,6 +31,7 @@ public:
     Player &getPlayer(int id);
     Player &getOpponent(int id);
     void display() const;
+    WinState whoWin() const;
     void displayHand(Player& player) const;
     void registerListener(const std::string& key, Ability* ability);
     void notify(const std::string& key, int playerId = -1, int boardIdx = -1);
