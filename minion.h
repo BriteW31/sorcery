@@ -21,18 +21,18 @@ public:
     Minion(const Minion &other);
     CardType getType() const override;
 
-    int getAttack() const;
-    int getDefense() const;
+    virtual int getAttack() const;
+    virtual int getDefense() const;
     void setAttack(int val);
     void setDefense(int val);
     void modifyStats(int atkDelta, int defDelta);
 
     bool canAct() const;
-    void restoreAction();
-    void spendAction();
+    virtual void restoreAction();
+    virtual void spendAction();
 
     virtual Ability *getAbility();
-    void setAbility(std::unique_ptr<Ability> ability);
+    virtual void setAbility(std::unique_ptr<Ability> ability);
 
     card_template_t display() const override;
 };
