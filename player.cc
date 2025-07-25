@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
-#include <iomanip>
 
 Player::Player(const std::string &name, int id, std::vector<std::unique_ptr<Card>> &&deck, Game *game)
     : name{name}, id{id}, deck{std::move(deck)}, game{game} {}
