@@ -13,6 +13,13 @@ Player &Board::getOpponent(int id) {
     return (id == 1) ? *player2 : *player1;
 }
 
+WinState Board::whoWin() const {
+    if (player1->getLife() <= 0 && player2->getLife() <= 0) return WinState::Tie;
+    else if (player1->getLife() <= 0) return WinState::Player2;
+    else if (player2->getLife() <= 0) return WinState::Player1;
+    else return WinState::NotEnd;
+}
+
 void Board::print(const std::vector<card_template_t> &cards, int height) const {
     for (int line = 0; line < height; line++) {
         for (const auto &card : cards) {
