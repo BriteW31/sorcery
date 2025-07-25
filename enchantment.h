@@ -24,6 +24,9 @@ public:
 
     Minion &getBase() const;
     std::unique_ptr<Minion> copyBase() const;
+
+    int getAttack() const override;
+    int getDefense() const override;
 };
 
 class GiantStrength : public Enchantment {
