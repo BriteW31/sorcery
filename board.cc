@@ -1,5 +1,6 @@
 #include "board.h"
 #include "ritual.h"
+#include "enchantment.h"
 #include <iostream>
 
 Board::Board(Game *game,std::unique_ptr<Player> p1, std::unique_ptr<Player> p2)
@@ -54,13 +55,13 @@ void Board::display() const {
         p1Minions.emplace_back(minion->display());
     }
     while (p1Minions.size() < BOARD_LIMIT) {
-        p1Minions.push_back(CARD_TEMPLATE_BORDER);
+        p1Minions.emplace_back(CARD_TEMPLATE_BORDER);
     }
     for (const auto &minion : p2Board) {
         p2Minions.emplace_back(minion->display());
     }
     while (p2Minions.size() < BOARD_LIMIT) {
-        p2Minions.push_back(CARD_TEMPLATE_BORDER);
+        p2Minions.emplace_back(CARD_TEMPLATE_BORDER);
     }
 
     print(p1Minions, BLOCK_HEIGHT);
@@ -74,7 +75,7 @@ void Board::displayHand(Player& player) const {
     std::vector<card_template_t> handGraphics;
 
     for (const auto& card : player.getHand()) {
-        handGraphics.push_back(card->display());
+        handGraphics.emplace_back(card->display());
     }
 
     if (handGraphics.empty()) {
@@ -85,6 +86,26 @@ void Board::displayHand(Player& player) const {
     print(handGraphics, BLOCK_HEIGHT);
 }
 
+void Board::inspect(int index, Player &currentPlayer) const {
+    index--;
+    if (index < 0 || index >= currentPlayer.getBoard().size()) {
+        std::cout << "Invalid index" << std::endl;
+        return;
+    }
+    std::vector<card_template_t> inspectGraphics;
+    auto &card = currentPlayer.getBoard().at(index);
+    Enchantment *enchantment = dynamic_cast<Enchantment *>(card.get());
+    Minion *bottomMinion = nullptr;
+    while (enchantment) {
+        inspectGraphics.emplace_back(enchantment->display());
+        auto prev = enchantment;
+        enchantment = dynamic_cast<Enchantment*>(&enchantment->getBase());
+        if (!enchantment) bottomMinion = dynamic_cast<Minion*>(&prev->getBase());
+    }
+    reverse(inspectGraphics.begin(), inspectGraphics.end());
+    print({bottomMinion->display()}, BLOCK_HEIGHT);
+    print(inspectGraphics, BLOCK_HEIGHT);
+}
 
 void Board::registerListener(const std::string& key, Ability* ability) {
     listeners.push_back({key, ability});
