@@ -1,7 +1,6 @@
 #include "ritual.h"
 #include "minion.h"
 #include <iostream>
-#include <iomanip>
 
 Ritual::Ritual(const std::string &name, int cost, std::string description, int activationCost, int charges)
     : Card{name, cost, description}, activationCost{activationCost}, charges{charges} {}
