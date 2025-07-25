@@ -35,7 +35,7 @@ void Unsummon::effect(Game *game, int targetPlayer, int targetIndex) {
     auto &hand = player.getHand();
     if (targetIndex < 1 || targetIndex > board.size() || hand.size() >= 5) return;
 
-    std::unique_ptr<Card> card = std::move(board.at(targetIndex - 1));
+    std::unique_ptr<Card> card = std::move(board[targetIndex - 1]);
     board.erase(board.begin() + (targetIndex - 1));
     hand.emplace_back(std::move(card));
 }
@@ -75,7 +75,7 @@ void Blizzard::effect(Game *game, int targetPlayer, int targetCard) {
     for (int p = 0; p < 2; p++) {
         auto &player = game -> getPlayer(p);
         for (size_t i = 0; i < player.getBoard().size(); i++) {
-            Card *card = player.getBoard().at(i).get();
+            Card *card = player.getBoard()[i].get();
             Minion *minion = dynamic_cast<Minion*>(card);
             minion -> setDefense(minion->getDefense() - 2);
             if (minion->getDefense() <= 0) {
