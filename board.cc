@@ -2,6 +2,7 @@
 #include "ritual.h"
 #include "enchantment.h"
 #include <iostream>
+#include <algorithm>
 
 Board::Board(Game *game,std::unique_ptr<Player> p1, std::unique_ptr<Player> p2)
     : player1{std::move(p1)}, player2{std::move(p2)} {}
@@ -102,7 +103,7 @@ void Board::inspect(int index, Player &currentPlayer) const {
         enchantment = dynamic_cast<Enchantment*>(&enchantment->getBase());
         if (!enchantment) bottomMinion = dynamic_cast<Minion*>(&prev->getBase());
     }
-    reverse(inspectGraphics.begin(), inspectGraphics.end());
+    std::reverse(inspectGraphics.begin(), inspectGraphics.end());
     print({bottomMinion->display()}, BLOCK_HEIGHT);
     print(inspectGraphics, BLOCK_HEIGHT);
 }
