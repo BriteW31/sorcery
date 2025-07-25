@@ -40,65 +40,49 @@ public:
 class AirElemental : public Minion {
 public:
     AirElemental();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<AirElemental>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 class EarthElemental : public Minion {
 public:
     EarthElemental();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<EarthElemental>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 class BoneGolem : public Minion {
 public:
     BoneGolem();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<BoneGolem>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 class FireElemental : public Minion {
 public:
     FireElemental();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<FireElemental>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 class PotionSeller : public Minion {
 public:
     PotionSeller();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<PotionSeller>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 class NovicePyromancer : public Minion {
 public:
     NovicePyromancer();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<NovicePyromancer>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 class ApprenticeSummoner : public Minion {
 public:
     ApprenticeSummoner();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<ApprenticeSummoner>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 class MasterSummoner : public Minion {
 public:
     MasterSummoner();
-    std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<MasterSummoner>(*this);  // use copy constructor
-    }
+    std::unique_ptr<Minion> clone() const override;
 };
 
 #endif
