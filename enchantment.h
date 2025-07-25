@@ -22,8 +22,48 @@ public:
     void setStatOverride(int atk, int def);
     void setStatModifier(int atkDelta, int defDelta);
 
-    Minion &getBase();
-    std::unique_ptr<Minion> copyBase();
+    Minion &getBase() const;
+    std::unique_ptr<Minion> copyBase() const;
+};
+
+class GiantStrength : public Enchantment {
+public:
+    GiantStrength(std::unique_ptr<Minion> target);
+    GiantStrength();
+    std::unique_ptr<Minion> clone() const;
+};
+
+class Enrage : public Enchantment {
+public:
+    Enrage(std::unique_ptr<Minion> target);
+    Enrage();
+    std::unique_ptr<Minion> clone() const;
+    int getAttack() const;
+    int getDefense() const;
+};
+
+class Haste : public Enchantment {
+public:
+    Haste(std::unique_ptr<Minion> target);
+    Haste();
+    std::unique_ptr<Minion> clone() const;
+    void restoreAction();
+};
+
+class MagicFatigue : public Enchantment {
+public:
+    MagicFatigue(std::unique_ptr<Minion> target);
+    MagicFatigue();
+    std::unique_ptr<Minion> clone() const;
+    Ability *getAbility() override;
+};
+
+class Silence : public Enchantment {
+public:
+    Silence(std::unique_ptr<Minion> target);
+    Silence();
+    std::unique_ptr<Minion> clone() const;
+    Ability *getAbility() override;
 };
 
 #endif
