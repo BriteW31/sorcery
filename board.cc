@@ -55,13 +55,13 @@ void Board::display() const {
         p1Minions.emplace_back(minion->display());
     }
     while (p1Minions.size() < BOARD_LIMIT) {
-        p1Minions.push_back(CARD_TEMPLATE_BORDER);
+        p1Minions.emplace_back(CARD_TEMPLATE_BORDER);
     }
     for (const auto &minion : p2Board) {
         p2Minions.emplace_back(minion->display());
     }
     while (p2Minions.size() < BOARD_LIMIT) {
-        p2Minions.push_back(CARD_TEMPLATE_BORDER);
+        p2Minions.emplace_back(CARD_TEMPLATE_BORDER);
     }
 
     print(p1Minions, BLOCK_HEIGHT);
@@ -75,7 +75,7 @@ void Board::displayHand(Player& player) const {
     std::vector<card_template_t> handGraphics;
 
     for (const auto& card : player.getHand()) {
-        handGraphics.push_back(card->display());
+        handGraphics.emplace_back(card->display());
     }
 
     if (handGraphics.empty()) {
@@ -97,7 +97,7 @@ void Board::inspect(int index, Player &currentPlayer) const {
     Enchantment *enchantment = dynamic_cast<Enchantment *>(card.get());
     Minion *bottomMinion = nullptr;
     while (enchantment) {
-        inspectGraphics.push_back(enchantment->display());
+        inspectGraphics.emplace_back(enchantment->display());
         auto prev = enchantment;
         enchantment = dynamic_cast<Enchantment*>(&enchantment->getBase());
         if (!enchantment) bottomMinion = dynamic_cast<Minion*>(&prev->getBase());

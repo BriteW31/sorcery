@@ -111,7 +111,7 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
             }
 
             // Replace minion on board
-            board[targetCard - 1] = std::move(wrapped);
+            board.at(targetCard - 1) = std::move(wrapped);
 
             std::cout << name << " enchanted minion with " << enchantmentName << std::endl;
 
