@@ -3,7 +3,6 @@
 #include "ritual.h"
 #include "enchantment.h"
 #include <iostream>
-#include <iomanip>
 
 Spell::Spell(const std::string &name, int cost, std::string description) : Card{name, cost, description} {}
 
