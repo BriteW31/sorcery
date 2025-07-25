@@ -1,6 +1,7 @@
 #include "game.h"
 #include "cardfactory.h"
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
 void Game::helpMsg() const {
@@ -20,12 +21,17 @@ void Game::helpMsg() const {
     }
 }
 
-Game::Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2, std::string initFile)
-    : testingMode{testing}, graphicsEnabled{graphics}, deckFile1{deckFile1}, deckFile2{deckFile2}, initFile{std::ifstream{initFile}} { }
+Game::Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2)
+    : testingMode{testing}, graphicsEnabled{graphics}, deckFile1{deckFile1}, deckFile2{deckFile2} { }
 
-void Game::init() {
+void Game::init(const std::string &initFile) {
+    this->initFile = initFile;
     std::istream *in = &std::cin;
-    if (initFile) in = &initFile;
+    std::ifstream file;
+    if (!initFile.empty()) {
+        file.open(initFile);
+        if (file) in = &file;
+    }
 
     std::string name1, name2;
     std::cout << "Enter Player 1's name: ";
@@ -47,36 +53,10 @@ void Game::start() {
         Player &p = getCurrentPlayer();
         p.startTurn();
         std::string cmd;
-        std::istream *input = initFile ? &initFile : &std::cin;
-        while (true) {
-            if (input->eof() && input == &initFile) {
-                input = &std::cin;
-                continue;
-            }
-            if (!std::getline(*input, cmd)) {
-                break;
-            }
-            if (cmd == "end") {
-                WinState result = board->whoWin();
-                if (result == WinState::NotEnd) break;
-                else {
-                    switch (result) {
-                        case WinState::Tie:
-                            std::cout << "Game Over, both player die" << std::endl;
-                            std::exit(EXIT_SUCCESS);
-                        case WinState::Player1:
-                            std::cout << "Game Over, " << board->getPlayer(1).getName() << " win" << std::endl;
-                            std::exit(EXIT_SUCCESS);
-                        case WinState::Player2:
-                            std::cout << "Game Over, " << board->getPlayer(2).getName() << " win" << std::endl;
-                            std::exit(EXIT_SUCCESS);
-                        default: break;
-                    }
-                } 
-            }
+        while (std::getline(std::cin, cmd)) {
+            if (cmd == "end") break;
             processCommand(cmd);
         }
-        
         p.endTurn();
         togglePlayer();
     }
