@@ -41,7 +41,7 @@ class AirElemental : public Minion {
 public:
     AirElemental();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<AirElemental>(*this); 
+        return std::make_unique<AirElemental>(*this);  // use copy constructor
     }
 };
 
@@ -49,7 +49,7 @@ class EarthElemental : public Minion {
 public:
     EarthElemental();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<EarthElemental>(*this); 
+        return std::make_unique<EarthElemental>(*this);  // use copy constructor
     }
 };
 
@@ -57,7 +57,7 @@ class BoneGolem : public Minion {
 public:
     BoneGolem();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<BoneGolem>(*this); 
+        return std::make_unique<BoneGolem>(*this);  // use copy constructor
     }
 };
 
@@ -65,7 +65,7 @@ class FireElemental : public Minion {
 public:
     FireElemental();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<FireElemental>(*this); 
+        return std::make_unique<FireElemental>(*this);  // use copy constructor
     }
 };
 
@@ -73,7 +73,7 @@ class PotionSeller : public Minion {
 public:
     PotionSeller();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<PotionSeller>(*this); 
+        return std::make_unique<PotionSeller>(*this);  // use copy constructor
     }
 };
 
@@ -81,7 +81,7 @@ class NovicePyromancer : public Minion {
 public:
     NovicePyromancer();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<NovicePyromancer>(*this); 
+        return std::make_unique<NovicePyromancer>(*this);  // use copy constructor
     }
 };
 
@@ -89,7 +89,7 @@ class ApprenticeSummoner : public Minion {
 public:
     ApprenticeSummoner();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<ApprenticeSummoner>(*this); 
+        return std::make_unique<ApprenticeSummoner>(*this);  // use copy constructor
     }
 };
 
@@ -97,7 +97,7 @@ class MasterSummoner : public Minion {
 public:
     MasterSummoner();
     std::unique_ptr<Minion> clone() const override {
-        return std::make_unique<MasterSummoner>(*this); 
+        return std::make_unique<MasterSummoner>(*this);  // use copy constructor
     }
 };
 
