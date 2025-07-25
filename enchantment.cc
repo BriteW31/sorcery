@@ -49,6 +49,16 @@ std::unique_ptr<Minion> Enchantment::copyBase() const {
     return target->clone();
 }
 
+int Enchantment::getAttack() const {
+    int base = target->getAttack();
+    return overrideStats ? newAttack : base + attackModifier;
+}
+
+int Enchantment::getDefense() const {
+    int base = target->getDefense();
+    return overrideStats ? newDefense : base + defenseModifier;
+}
+
 // Giant Strength: +2/+2
 GiantStrength::GiantStrength(std::unique_ptr<Minion> target)
     : Enchantment{"Giant Strength", 1, "Enchanted minion gains +2/+2", std::move(target)} {
