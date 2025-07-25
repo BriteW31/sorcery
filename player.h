@@ -45,8 +45,8 @@ public:
     Game *getGame();
     Ritual *getRitual();
 
-    void destroyMinion(int index);
-    void removeRitual();
+    bool destroyMinion(int index);
+    bool removeRitual();
 };
 
 #endif

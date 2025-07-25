@@ -20,58 +20,71 @@ card_template_t Spell::display() const {
     return display_spell(name, cost, description);
 }
 
-void Banish::effect(Game *game, int targetPlayer, int targetCard) {
-    targetCard--;
+bool Banish::effect(Game *game, int targetPlayer, int targetCard) {
     auto &p = game->getPlayer(targetPlayer);
-    if (targetCard == 6) {
-        p.removeRitual();
+    bool result;
+    if (targetCard == 5) {
+        result = p.removeRitual();
     } else {
-        p.destroyMinion(targetCard);
+        result = p.destroyMinion(targetCard);
     }
+    return result;
 }
-void Unsummon::effect(Game *game, int targetPlayer, int targetIndex) {
+bool Unsummon::effect(Game *game, int targetPlayer, int targetIndex) {
     auto &player = game -> getPlayer(targetPlayer);
     auto &board = player.getBoard();
     auto &hand = player.getHand();
-    if (targetIndex < 1 || targetIndex > board.size() || hand.size() >= 5) return;
-
-    std::unique_ptr<Card> card = std::move(board.at(targetIndex - 1));
-    board.erase(board.begin() + (targetIndex - 1));
+    if (targetIndex < 0 || targetIndex >= board.size() || hand.size() >= 5) {
+        std::cout << "Invalid index" << std::endl;
+        return false;
+    }
+    std::unique_ptr<Card> card = std::move(board.at(targetIndex));
+    board.erase(board.begin() + (targetIndex));
     hand.emplace_back(std::move(card));
+    return true;
 }
-void Recharge::effect(Game *game, int targetPlayer, int targetCard) {
+bool Recharge::effect(Game *game, int targetPlayer, int targetCard) {
     auto ritual = game->getPlayer(targetPlayer).getRitual();
     if (ritual) {
         ritual->addCharges(3);
+        return true;
+    } else {
+        return false;
     }
 }
-void Disenchant::effect(Game *game, int targetPlayer, int targetCard) {
+bool Disenchant::effect(Game *game, int targetPlayer, int targetCard) {
     auto &player = game -> getPlayer(targetPlayer);
     auto &board = player.getBoard();
+    if (targetCard < 0 || targetCard >= board.size()) {
+        std::cout << "Invalid index" << std::endl;
+        return false;
+    }
     auto &card = board.at(targetCard);
-
     Enchantment *enchantment = dynamic_cast<Enchantment *>(card.get());
     if (enchantment) {
         card = enchantment->copyBase();
+        return true;
     } else {
         std::cout << "This minion has no enchantments to remove" << std::endl;
+        return false;
     }
 }
-void RaiseDead::effect(Game *game, int targetPlayer, int targetCard) {
+bool RaiseDead::effect(Game *game, int targetPlayer, int targetCard) {
     auto &player = game -> getPlayer(targetPlayer);
     auto &graveyard = player.getGraveyard();
     auto &board = player.getBoard();
     if (graveyard.empty() || board.size() >= 5) {
-        std::cerr << "Graveyard is empty or board is full" << std::endl;
-        return;
+        std::cout << "Graveyard is empty or board is full" << std::endl;
+        return false;
     }
     std::unique_ptr<Card> card = std::move(graveyard.back());
     graveyard.pop_back();
     Minion *minion = dynamic_cast<Minion*>(card.get());
     minion->setDefense(1);
     board.emplace_back(std::move(card));
+    return true;
 }
-void Blizzard::effect(Game *game, int targetPlayer, int targetCard) {
+bool Blizzard::effect(Game *game, int targetPlayer, int targetCard) {
     for (int p = 0; p < 2; p++) {
         auto &player = game -> getPlayer(p);
         for (size_t i = 0; i < player.getBoard().size(); i++) {
@@ -84,4 +97,5 @@ void Blizzard::effect(Game *game, int targetPlayer, int targetCard) {
             }
         }
     }
+    return true;
 }
