@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include <fstream>
 #include "player.h"
 #include "board.h"
 #include "ascii_graphics.h"
@@ -16,12 +15,12 @@ class Game {
     bool graphicsEnabled = false;
     std::string deckFile1;
     std::string deckFile2;
-    std::ifstream initFile;
+    std::string initFile;
     void helpMsg() const;
 
 public:
-    Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2, std::string initFile);
-    void init();
+    Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2);
+    void init(const std::string &initFile = "");
     void start();
     void processCommand(const std::string &line);
     Player &getCurrentPlayer();
