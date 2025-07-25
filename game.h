@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <memory>
+#include <fstream>
 #include <vector>
 #include <string>
 #include "player.h"
@@ -15,12 +16,12 @@ class Game {
     bool graphicsEnabled = false;
     std::string deckFile1;
     std::string deckFile2;
-    std::string initFile;
+    std::ifstream initFile;
     void helpMsg() const;
 
 public:
-    Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2);
-    void init(const std::string &initFile = "");
+    Game(bool testing, bool graphics, std::string deckFile1, std::string deckFile2, std::string initFile);
+    void init();
     void start();
     void processCommand(const std::string &line);
     Player &getCurrentPlayer();
