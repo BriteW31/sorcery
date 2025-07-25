@@ -23,11 +23,11 @@ public:
 
     virtual int getAttack() const;
     virtual int getDefense() const;
-    void setAttack(int val);
-    void setDefense(int val);
-    void modifyStats(int atkDelta, int defDelta);
+    virtual void setAttack(int val);
+    virtual void setDefense(int val);
+    virtual void modifyStats(int atkDelta, int defDelta);
 
-    bool canAct() const;
+    virtual bool canAct() const;
     virtual void restoreAction();
     virtual void spendAction();
 
