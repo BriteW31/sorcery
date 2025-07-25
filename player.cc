@@ -81,7 +81,6 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
                 return;
             }
 
-            // Remove the minion to be enchanted
             std::unique_ptr<Card> targetCardPtr = std::move(board.at(targetCard - 1));
             Minion *targetMinion = dynamic_cast<Minion*>(targetCardPtr.get());
             if (!targetMinion) {

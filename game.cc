@@ -114,7 +114,10 @@ void Game::processCommand(const std::string &line) {
             currentPlayer.playCard(i, p, t, testingMode);
         }
     } else if (cmd == "inspect") {
-
+        int i = -1;
+        if (iss >> i) {
+            board->inspect(i, currentPlayer);
+        }
     } else if (cmd == "hand") {
         board->displayHand(currentPlayer);
     } else if (cmd == "board") {

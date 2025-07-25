@@ -1,5 +1,6 @@
 #include "board.h"
 #include "ritual.h"
+#include "enchantment.h"
 #include <iostream>
 
 Board::Board(Game *game,std::unique_ptr<Player> p1, std::unique_ptr<Player> p2)
@@ -85,6 +86,26 @@ void Board::displayHand(Player& player) const {
     print(handGraphics, BLOCK_HEIGHT);
 }
 
+void Board::inspect(int index, Player &currentPlayer) const {
+    index--;
+    if (index < 0 || index >= currentPlayer.getBoard().size()) {
+        std::cout << "Invalid index" << std::endl;
+        return;
+    }
+    std::vector<card_template_t> inspectGraphics;
+    auto &card = currentPlayer.getBoard().at(index);
+    Enchantment *enchantment = dynamic_cast<Enchantment *>(card.get());
+    Minion *bottomMinion = nullptr;
+    while (enchantment) {
+        inspectGraphics.push_back(enchantment->display());
+        auto prev = enchantment;
+        enchantment = dynamic_cast<Enchantment*>(&enchantment->getBase());
+        if (!enchantment) bottomMinion = dynamic_cast<Minion*>(&prev->getBase());
+    }
+    reverse(inspectGraphics.begin(), inspectGraphics.end());
+    print({bottomMinion->display()}, BLOCK_HEIGHT);
+    print(inspectGraphics, BLOCK_HEIGHT);
+}
 
 void Board::registerListener(const std::string& key, Ability* ability) {
     listeners.push_back({key, ability});

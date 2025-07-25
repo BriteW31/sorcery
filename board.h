@@ -30,9 +30,10 @@ public:
 
     Player &getPlayer(int id);
     Player &getOpponent(int id);
-    void display() const;
     WinState whoWin() const;
+    void display() const;
     void displayHand(Player& player) const;
+    void inspect(int index, Player &currentPlayer) const;
     void registerListener(const std::string& key, Ability* ability);
     void notify(const std::string& key, int playerId = -1, int boardIdx = -1);
     void start_turn();
