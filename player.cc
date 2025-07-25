@@ -53,7 +53,7 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
             
         case CardType::Spell: {
             Spell *spell = dynamic_cast<Spell*>(currentCard.get());
-            spell->effect(game, targetPlayer, targetCard);
+            spell->effect(game, targetPlayer, targetCard - 1);
             std::cout << name << " played spell: " << spell->getName() << std::endl;
             break;
         }
