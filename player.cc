@@ -44,6 +44,7 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
         case CardType::Minion: {
             if (board.size() >= 5) {
                 std::cout << "Board full!" << std::endl;
+                changeMagic(currentCard->getCost());
                 return;
             }
             std::cout << name << " placed " << currentCard->getName() << std::endl;
@@ -53,8 +54,12 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
             
         case CardType::Spell: {
             Spell *spell = dynamic_cast<Spell*>(currentCard.get());
-            spell->effect(game, targetPlayer, targetCard - 1);
-            std::cout << name << " played spell: " << spell->getName() << std::endl;
+            if (spell->effect(game, targetPlayer, targetCard - 1)) {
+                std::cout << name << " played spell: " << spell->getName() << std::endl;
+            }
+            else {
+                changeMagic(currentCard->getCost());
+            }
             break;
         }
 
@@ -67,18 +72,21 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
         case CardType::Enchantment: {
             if (targetPlayer != id) {
                 std::cerr << "Can only enchant your own minions." << std::endl;
+                changeMagic(currentCard->getCost());
                 return;
             }
             if (targetCard < 1 || targetCard > static_cast<int>(board.size())) {
                 std::cerr << "Invalid target minion index for enchantment." << std::endl;
+                changeMagic(currentCard->getCost());
                 return;
             }
 
             // Remove the minion to be enchanted
-            std::unique_ptr<Card> targetCardPtr = std::move(board[targetCard - 1]);
+            std::unique_ptr<Card> targetCardPtr = std::move(board.at(targetCard - 1));
             Minion *targetMinion = dynamic_cast<Minion*>(targetCardPtr.get());
             if (!targetMinion) {
                 std::cerr << "Target is not a minion." << std::endl;
+                changeMagic(currentCard->getCost());
                 return;
             }
 
@@ -197,22 +205,30 @@ std::vector<std::unique_ptr<Card>> &Player::getGraveyard() { return graveyard; }
 Game *Player::getGame() { return game; }
 Ritual *Player::getRitual() { return dynamic_cast<Ritual *>(ritual.get()); }
 
-void Player::destroyMinion(int index) {
+bool Player::destroyMinion(int index) {
     if (index >= 0 && index < static_cast<int>(board.size())) {
         std::cout << board.at(index)->getName() << "died" << std::endl;
         graveyard.emplace_back(std::move(board.at(index)));
         board.erase(board.begin() + index);
+        return true;
+    } else {
+        return false;
     }
 }
 
-void Player::removeRitual() {
-    std::cout << ritual->getName() << "removed" << std::endl;
-    ritual.reset();
+bool Player::removeRitual() {
+    if (ritual) {
+        std::cout << ritual->getName() << "removed" << std::endl;
+        ritual.reset();
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void Player::discardCard(int index) {
     if (index < 1 || index > hand.size()) {
-        std::cerr << "Wrong index" << std::endl;
+        std::cout << "Wrong index" << std::endl;
     } else {
         hand.erase(hand.begin() + index - 1);
     }
