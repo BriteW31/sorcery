@@ -56,9 +56,27 @@ void Game::start() {
             if (!std::getline(*input, cmd)) {
                 break;
             }
-            if (cmd == "end") break;
+            if (cmd == "end") {
+                WinState result = board->whoWin();
+                if (result == WinState::NotEnd) break;
+                else {
+                    switch (result) {
+                        case WinState::Tie:
+                            std::cout << "Game Over, both player die" << std::endl;
+                            std::exit(EXIT_SUCCESS);
+                        case WinState::Player1:
+                            std::cout << "Game Over, " << board->getPlayer(1).getName() << " win" << std::endl;
+                            std::exit(EXIT_SUCCESS);
+                        case WinState::Player2:
+                            std::cout << "Game Over, " << board->getPlayer(2).getName() << " win" << std::endl;
+                            std::exit(EXIT_SUCCESS);
+                        default: break;
+                    }
+                } 
+            }
             processCommand(cmd);
         }
+        
         p.endTurn();
         togglePlayer();
     }
