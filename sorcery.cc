@@ -59,8 +59,8 @@ InitOptions processArguments(int argc, char* argv[]) {
 int main(int argc, char* argv[]) {
     try {
         InitOptions options = processArguments(argc, argv);
-        Game game{options.testingMode, options.graphicsMode, options.deck1, options.deck2};
-        game.init(options.initFile);
+        Game game{options.testingMode, options.graphicsMode, options.deck1, options.deck2, options.initFile};
+        game.init();
         game.start();
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
