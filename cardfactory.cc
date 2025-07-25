@@ -36,6 +36,11 @@ std::unique_ptr<Card> CardFactory::createCard(const std::string &name) {
     else if (name == "Disenchant") return std::make_unique<Disenchant>();
     else if (name == "Raise Dead") return std::make_unique<RaiseDead>();
     else if (name == "Blizzard") return std::make_unique<Blizzard>();
+    else if (name == "Giant Strength") return std::make_unique<GiantStrength>();
+    else if (name == "Enrage") return std::make_unique<Enrage>();
+    else if (name == "Haste") return std::make_unique<Haste>();
+    else if (name == "Magic Fatigue") return std::make_unique<MagicFatigue>();
+    else if (name == "Silence") return std::make_unique<Silence>();
     else {
         std::cerr << "Unknown card name: " << name << std::endl;
         return nullptr;
