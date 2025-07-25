@@ -2,7 +2,7 @@
 #include "minion_abilities.h"
 #include <iostream>
 #include <iomanip>
-#include "minion_abilities.cc"
+#include "minion_abilities.h"
 
 Minion::Minion(const std::string &name, int cost, std::string description, int atk, int def)
     : Card{name, cost, description}, atk{atk}, def{def}, actions{0} {}
