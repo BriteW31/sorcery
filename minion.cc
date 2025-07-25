@@ -68,6 +68,37 @@ MasterSummoner::MasterSummoner()
     setAbility(std::make_unique<MasterSummonerAbility>());
 }
 
+std::unique_ptr<Minion> AirElemental::clone() const {
+    return std::make_unique<AirElemental>(*this);
+}
+
+std::unique_ptr<Minion> EarthElemental::clone() const {
+    return std::make_unique<EarthElemental>(*this);
+}
+
+std::unique_ptr<Minion> BoneGolem::clone() const {
+    return std::make_unique<BoneGolem>(*this);
+}
+
+std::unique_ptr<Minion> FireElemental::clone() const {
+    return std::make_unique<FireElemental>(*this);
+}
+
+std::unique_ptr<Minion> PotionSeller::clone() const {
+    return std::make_unique<PotionSeller>(*this);
+}
+
+std::unique_ptr<Minion> NovicePyromancer::clone() const {
+    return std::make_unique<NovicePyromancer>(*this);
+}
+
+std::unique_ptr<Minion> ApprenticeSummoner::clone() const {
+    return std::make_unique<ApprenticeSummoner>(*this);
+}
+
+std::unique_ptr<Minion> MasterSummoner::clone() const {
+    return std::make_unique<MasterSummoner>(*this);
+}
 
 card_template_t Minion::display() const {
     return display_minion_no_ability(name, cost, atk, def);
