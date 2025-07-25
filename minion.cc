@@ -1,7 +1,6 @@
 #include "minion.h"
 #include "minion_abilities.h"
 #include <iostream>
-#include <iomanip>
 #include "minion_abilities.h"
 
 Minion::Minion(const std::string &name, int cost, std::string description, int atk, int def)
