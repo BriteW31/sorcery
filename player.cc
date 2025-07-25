@@ -28,7 +28,7 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
         std::cerr << "Invalid hand index" << std::endl;
         return;
     }
-    auto &currentCard = hand[index - 1];
+    auto &currentCard = hand.at(index - 1);
     if (currentCard->getCost() <= magic) {
         changeMagic(-currentCard->getCost());
     } else {
@@ -58,7 +58,7 @@ void Player::playCard(int index, int targetPlayer, int targetCard, bool isTestin
         }
 
         case CardType::Ritual: {
-            ritual = std::move(hand[index - 1]);
+            ritual = std::move(hand.at(index - 1));
             std::cout << name << " played ritual: " << ritual->getName() << std::endl;
             break;
         }
@@ -76,7 +76,7 @@ void Player::attack(int attackerIdx, int defenserIdx, Player &opponent) {
         std::cout << "Invalid attacker" << std::endl;
         return;
     }
-    Card *attackCard = board[attackerIdx - 1].get();
+    Card *attackCard = board.at(attackerIdx - 1).get();
     Minion *attacker = dynamic_cast<Minion*>(attackCard);
     if (!attacker->canAct()) {
         std::cout << attacker->getName() << " cannot act" << std::endl;
@@ -91,7 +91,7 @@ void Player::attack(int attackerIdx, int defenserIdx, Player &opponent) {
             std::cout << "Invalid target minion index" << std::endl;
             return;
         }
-        Card *targetCard = opponent.board[defenserIdx - 1].get();
+        Card *targetCard = opponent.board.at(defenserIdx - 1).get();
         Minion *target = dynamic_cast<Minion*>(targetCard);
         if (!target) {
             std::cout << "Target card is not a minion" << std::endl;
@@ -102,11 +102,11 @@ void Player::attack(int attackerIdx, int defenserIdx, Player &opponent) {
         target->setDefense(target->getDefense() - attacker->getAttack());
 
         if (attacker->getDefense() <= 0) {
-            graveyard.emplace_back(std::move(board[attackerIdx - 1]));
+            graveyard.emplace_back(std::move(board.at(attackerIdx - 1)));
             board.erase(board.begin() + (attackerIdx - 1));
         }
         if (target->getDefense() <= 0) {
-            opponent.graveyard.emplace_back(std::move(opponent.board[defenserIdx - 1]));
+            opponent.graveyard.emplace_back(std::move(opponent.board.at(defenserIdx - 1)));
             opponent.board.erase(opponent.board.begin() + (defenserIdx - 1));
         }
     }
@@ -156,8 +156,8 @@ Ritual *Player::getRitual() { return dynamic_cast<Ritual *>(ritual.get()); }
 
 void Player::destroyMinion(int index) {
     if (index >= 0 && index < static_cast<int>(board.size())) {
-        std::cout << board[index]->getName() << "died" << std::endl;
-        graveyard.emplace_back(std::move(board[index]));
+        std::cout << board.at(index)->getName() << "died" << std::endl;
+        graveyard.emplace_back(std::move(board.at(index)));
         board.erase(board.begin() + index);
     }
 }
