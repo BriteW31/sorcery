@@ -1,3 +1,3 @@
-Requires ritual implementation
-Requires ability implementation
-Requires graphics
+Requires ritual implementation?
+Requires ability implementation of both apprentices?
+Requires graphics?
